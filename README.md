@@ -22,13 +22,20 @@ of the user, i.e., the person making the top-level call to source().
 These control parameters should be passed to each call to source.
 
 So we explore how to implement this in this code.
+This is a somewhat interesting case study in 
++ static code analysis,
++ meta-programming and manipulating language objects
++ semi-standard evaluation
++ run-time interception of calls
++ call frames and the call stack.
+
 There are several possible approaches to implementing this.
 
 + √ static analysis on each target script to find and modify any calls to source to add the additional
   arguments from the top-level call.
 + √ run-time, using trace() to catch each call to source() and assign values to 
   parameters from the top-level call if they were not supplied in the specific call.
-+ [not implemented] run-time, temporarily define a new function source that captures the arguments
++ [not implemented (yet)] run-time, temporarily define a new function source that captures the arguments
   in the original call to source() 
 
 ## Static analysis
