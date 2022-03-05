@@ -2,14 +2,29 @@
 psource =
 function()
 {
-    k = match.call()
-       # need to leave the file for chdir to be able to take effect. but can't have file and exprs
-    k = k[-2] 
+    origCall = substitute(k, list(k = origCall))
+
+    k = match.call()    
+    if(length(origCall) == 0) {
+        # need to leave the file for chdir to be able to take effect. but can't have file and exprs
+        origCall = k
+        #m = match("origCall", names(k))
+        #origCall = k[-m]
+    } 
+        
+
     exprs = as.list(parse(file))
-    exprs = updateCallsToSource(exprs, k)
+    exprs = updateCallsToSource(exprs, origCall)
 
     k$exprs = exprs
+
+    k = k[-2]    
+    m = match("origCall", names(k))
+    if(!is.na(m))
+        k = k[-m]
+    
     k[[1]] = as.name("source")
+    
     print(getwd())
     if(chdir) {
         cwd = getwd()
@@ -20,6 +35,7 @@ function()
 }
 
 formals(psource) = formals(source)
+formals(psource)$origCall = quote(list())
 
 updateCallsToSource =
 function(exprs, origCall)
@@ -45,6 +61,8 @@ function(call, origCall)
     addParams = setdiff(origParams, names(call))
     call[ addParams ] = origCall[addParams]
     call[[1]] = as.name("psource")
+#    browser()
+    call$origCall = substitute(quote(k), list(k = origCall))
     call
 }
 
