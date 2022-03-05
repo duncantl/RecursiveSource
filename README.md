@@ -1,4 +1,11 @@
-The source()  function has chdir parameter that temporarily changes
+# Source
+
+A long, long time ago I implemented a version of the source() function
+that could track the files it was sourcing recursively.
+This would 1) facilitate resolving files relative to different files being source
+and 2) allow the code being sourced to check from where they were being sourced.
+
+The source()  function now has a `chdir` parameter that temporarily changes
 the current working directory to that of the file being sourced.
 This means commands such as readLines, read.table, readxl, ...
 in the file being sourced can continue to be "local" to the
@@ -9,23 +16,43 @@ they too can add `chdir = TRUE` to the call and that makes sense as the author
 of the script knows whether the target script being sourced needs to operate in its
 local directory.  So that is up to the author of each script.
 
-However, where the script should be evaluated, i.e., the local parameter, 
+However, in which environment the script should be evaluated, i.e., the local parameter, 
 or whether verbose and echo should be TRUE or FALSE should be at the discretion
 of the user, i.e., the person making the top-level call to source().
 These control parameters should be passed to each call to source.
 
+So we explore how to implement this in this code.
+There are several possible approaches to implementing this.
 
-
-+ static analysis on the target script to modify any calls to source to add the additional arguments.
-+ run-time, temporarily define a new function source that captures the arguments
-  in the original call to source() 
-+ use trace() to catch each call to source() and assign values to 
++ √ static analysis on each target script to find and modify any calls to source to add the additional
+  arguments from the top-level call.
++ √ run-time, using trace() to catch each call to source() and assign values to 
   parameters from the top-level call if they were not supplied in the specific call.
++ [not implemented] run-time, temporarily define a new function source that captures the arguments
+  in the original call to source() 
+
+## Static analysis
+
+See psource() in [parseSource.R](R/parseSource.R).
+
+This approach parses the file and then modifies any calls to source()
+in that file 
++ to instead call psource(), and 
++ add any arguments in the top-level call to psource() to these calls
++ add the top-level call to each call to psource() via the origCall parameter we add to psource().
+
+Each recursive call to source() will become a call to psource().
+In each of those calls to psource(), we again parse the new file being sourced()
+and change those.
 
 
+At present, it only handles top-level calls to source(), not those nested within
+e.g., if statements or other calls. Fixing this orthogonal to the approach.
 
 
 ## rsource and trace()
+
+See rsource in [source3.R](R/traceSource.R)
 
 We wanted to create a local version of fixSourceCall() so that it had
 the environment of the top-level call to source(). This way, it would
