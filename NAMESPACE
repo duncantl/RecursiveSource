@@ -2,6 +2,7 @@ export(rsource, psource)
 
 # we have to export fixSourceCall as a call to it gets inserted into the
 # code for source() as part of the trace code. R will then try to find it
-# 
+# If we want to hide this, we can create an anonymous function in traceSource
+# and pass that to trace().
 export(fixSourceCall)
 
