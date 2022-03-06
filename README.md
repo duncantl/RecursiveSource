@@ -122,7 +122,7 @@ Since echo = FALSE, the prompt.echo argument is not actually used.
 
 
 It would be nice to remove the messags from trace() and untrace().
-We could engineer this, but not now.
+We could engineer this, but not now as again, it is orthogonal to focus here.
 
 
 
@@ -130,16 +130,3 @@ We could engineer this, but not now.
 
 
 
-
-
-
-## Our source() function in R/source2.R
-Problem:  When base::source is called
-  and that script contains a call to source
-  it will see this one but won't pass the ...
-  from this top-level call to the subsequent
-  calls to source() in those scripts.
-
- So if we source inst/A/a.R and it calls
-     source("../B/b.R")
- that 
