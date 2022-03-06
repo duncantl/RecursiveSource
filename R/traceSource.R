@@ -8,7 +8,7 @@ function()
     if(!is(source, "functionWithTrace")) {
      
         k = match.call() # sys.call()
-        if(TRUE) {
+        if(FALSE) {
             # if this branch is TRUE, need to export fixSourceCall
            expr = substitute(fixSourceCall(e, sys.nframe(), quote(call)),
                                      list(e = environment(), call = k))
@@ -28,7 +28,7 @@ function()
             # is probably better.
             # 
             env = environment()
-            k2 = substitute(quote(call), list(call = k))
+            k2 = k # substitute(quote(call), list(call = k))
             trace(source, function()
                               fixSourceCall(env, sys.nframe(), k2),
               print = FALSE)
@@ -48,7 +48,7 @@ formals(rsource) = formals(source)
 fixSourceCall =
 function(env, frameNum, origCall)
 {
-    pos = sys.nframe() - 5 # needs to be 5 for the version w/o the anonymous function for trace().
+    pos = sys.nframe() - 6 # 5 # needs to be 5 for the version w/o the anonymous function for trace().
     curFrame = sys.frame(pos)
     k = sys.calls()[[pos]]
     curCall = match.call(source, k)

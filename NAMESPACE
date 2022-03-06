@@ -4,5 +4,5 @@ export(rsource, psource)
 # code for source() as part of the trace code. R will then try to find it
 # If we want to hide this, we can create an anonymous function in traceSource
 # and pass that to trace().
-export(fixSourceCall)
+#export(fixSourceCall)
 
