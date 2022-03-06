@@ -1,4 +1,8 @@
 #
+# e = new.env()
+# psource("inst/A/a.R", e, chdir = TRUE)
+# psource("inst/A/a.R", e, chdir = TRUE, echo = TRUE, prompt.echo = ">> ")
+#
 psource =
 function()
 {
@@ -7,8 +11,12 @@ function()
         origCall = k
 
     exprs = as.list(parse(file))
+    # modify calls to source() to become calls to psource() with any additional arguments
     exprs = updateCallsToSource(exprs, origCall)
 
+    # Create the call to source() from this call to psource,
+    # removing the file argument and and adding an exprs argument.
+    # Also remove the origCall from this call to psource.
     k$exprs = exprs
     # need to leave the file for chdir to be able to take effect. but can't have file and exprs
     # That's why we have to handle the chdir/setwd below.
@@ -23,7 +31,9 @@ function()
         cwd = getwd()
         on.exit(setwd(cwd))
         setwd(dirname(file))
-    }    
+    }
+
+    # Now perform the call to source()
     eval(k, parent.frame())
 }
 
@@ -48,6 +58,9 @@ function(exprs, origCall)
 }
 
 updateSourceCall =
+    # Change the call to source() to psource()
+    # add any arguments in origCall that are not in call
+    # and add origCall = quote( actual original call ).
 function(call, origCall)    
 {
     call = match.call(source, call)
@@ -61,6 +74,13 @@ function(call, origCall)
 }
 
 
+
+
+
+# From CodeAnalysis
+isCallTo =
+function(x, funs)
+    is.call(x) && is.name(x[[1]]) && as.character(x[[1]]) %in% funs
 
 
 
