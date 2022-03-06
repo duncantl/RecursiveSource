@@ -5,7 +5,9 @@ rsource =
     #
 function()
 {
-    if(!is(source, "functionWithTrace")) {
+    use_file = NA # doesn't matter. Only to keep R CMD check happy.
+    
+    if(!inherits(source, "functionWithTrace")) {
      
         k = match.call() # sys.call()
         if(FALSE) {

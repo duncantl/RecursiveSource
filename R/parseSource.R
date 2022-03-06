@@ -6,6 +6,8 @@
 psource =
 function()
 {
+    use_file = NA # doesn't matter. Only to keep R CMD check happy.
+    
     k = match.call()    
     if(length(origCall) == 0) 
         origCall = k
