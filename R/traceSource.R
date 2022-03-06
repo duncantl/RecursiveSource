@@ -6,7 +6,7 @@ rsource =
 function()
 {
     if(!is(source, "functionWithTrace")) {
-        message("setting trace on source")
+        # message("setting trace on source")
         # environment(fixSourceCall) = sys.frame(sys.nframe())
 
         k = match.call() # sys.call()
@@ -42,5 +42,4 @@ function(env, frameNum, origCall)
     addArgs = intersect(names(origCall), margs)
 
     lapply(addArgs, function(var) assign(var, get(var, env), envir = curFrame ))
-#    TRUE
 }
