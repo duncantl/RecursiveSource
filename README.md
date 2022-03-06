@@ -59,7 +59,7 @@ e.g., if statements or other calls. Fixing this orthogonal to the approach.
 
 ## rsource and trace()
 
-See rsource in [source3.R](R/traceSource.R)
+See rsource in [traceSource3.R](R/traceSource.R)
 
 We wanted to create a local version of fixSourceCall() so that it had
 the environment of the top-level call to source(). This way, it would
