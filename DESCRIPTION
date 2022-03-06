@@ -1,0 +1,15 @@
+Package: RecursiveSource
+Title: Pass user-specific arguments to recursive calls to source()
+Description: The source() function provides parameters with which the R user
+  can control the display of the code being processed, etc.
+  These are not passed to recursive calls to source().
+  It is useful to allow the caller to control the environment in which
+  recursive calls to source() are evaluated.
+  This case study explores ways to implement passing these user-level arguments
+  to all recursive calls to source.
+  This illustrates static code analysis and run-time manipulation of
+  the call frames on the call stack.
+Version: 0.1-0
+Author: Duncan Temple Lang
+Maintainer: <duncan@r-project.org>
+License: BSD3

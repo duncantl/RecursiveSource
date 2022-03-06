@@ -1,0 +1,7 @@
+export(rsource, psource)
+
+# we have to export fixSourceCall as a call to it gets inserted into the
+# code for source() as part of the trace code. R will then try to find it
+# 
+export(fixSourceCall)
+
