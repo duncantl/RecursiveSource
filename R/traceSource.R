@@ -22,7 +22,7 @@ function()
             # Instead, we create an anonymous function. The promise will get the
             # correct environment, i.e., this call frame.
             # This is just a different way of setting up the call to fixSourceCall
-            # rather than the substitute aboev. So not a big win, just a different
+            # rather than the substitute above. So not a big win, just a different
             # approach. The original intent was to have fixSourceCall() defined
             # here locally with this call frame as its environment so it would
             # simply have access to the call and arguments in this call frame
