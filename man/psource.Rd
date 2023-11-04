@@ -9,6 +9,10 @@
   This is important when specifying a value for the \code{local} parameter.
   It is also convenient to have the parameters such as
   \code{echo}, \code{verbose}, \code{prompt.echo}, etc.
+
+  The p in \code{psource} stands for parse.
+  We parse each file being sourced and rewrite the calls to source
+  to be calls to \code{psource}, adding arguments in each call.
 }
 \usage{
 psource(file, local = FALSE, echo = verbose, print.eval = echo,
@@ -76,9 +80,12 @@ psource(file, local = FALSE, echo = verbose, print.eval = echo,
 }
 }
 \details{
-  This uses \code{\link[base]{trace}} to intercept calls to \code{source}
-  and then modify that call frame to \code{source} before the body
-  is evaluated.
+  This parses each file being source and transforms
+  calls to \code{source} to be calls to \code{psource}
+  with the additional arguments from the top-level call
+  inserted into each call.
+  This doesn't write the code back to files.  It just
+  parse a file, rewrites the code and then evaluates it.
 }
 \value{
  see help for \code{\link[base]{source}}          
