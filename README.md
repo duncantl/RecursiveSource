@@ -125,8 +125,17 @@ It would be nice to remove the messags from trace() and untrace().
 We could engineer this, but not now as again, it is orthogonal to focus here.
 
 
+## Temporary source function
 
-
-
+The idea behind approach 3 is that that first/top-level call to source captures
+the arguments and then assigns a new version to source.
+This involves unlocking bindings and assigning to the base package.
+We use on.exit to restore the original value of source().
+All sub-calls to source will find the new version of the function
+and it will essentially intercept the regular calls to source
+and either
++ create a new call to source(), adding the arguments
++ change the values of the parameters in this call frame of the parameters
+  not specified in this call but provided in the first call to source.
 
 
